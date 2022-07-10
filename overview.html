@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/44dd7d2f30.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="styleOverview.css" />
+    <title>Contacts</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <form class="search-bar">
+          <input
+            type="search-name"
+            class="contact-search"
+            name="search-area"
+            placeholder="Search"
+            data-search
+          />
+        </form>
+        <div class="add-button" id="addButton">
+          <a href="#" id="addButton">
+            <i class="fa-solid fa-circle-plus"></i
+          ></a>
+        </div>
+
+        <a href="#" class="log-out-link">
+          <div class="log-out" id="logOut">Log Out</div>
+        </a>
+      </header>
+      <section class="contacts-library">
+        <div class="contacts-list" contact-cards-container></div>
+
+        <template class="search-bar" data-contact-template>
+          <div class="card">
+            <div class="contact-name" data-contact-name></div>
+            <div class="contact-number" data-contact-number></div>
+          </div>
+        </template>
+      </section>
+    </div>
+    <script type="module" src="/js/index.js"></script>
+  </body>
+</html>
+
+<!-- <ul class="contacts-list" contact-cards-container>
+  <a href="contact.profile.html">
+    <div class="contact-section">
+      <li class="list-item">
+        <p class="contact-name" data-contact-name>User Name</p>
+        <p class="contact-number" data-contact-number>054560600905</p>
+      </li>
+      <li class="list-item"><i class="fa-solid fa-phone"></i></li></div
+  ></a>
+</ul> -->
