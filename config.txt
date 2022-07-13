@@ -1,0 +1,9 @@
+NODE_ENV=development
+PORT=3000
+USER=Huseyin
+DATABASE=mongodb+srv://huseyinkaratas:<PASSWORD>@cluster0.ugkqwmk.mongodb.net/contact-app?retryWrites=true&w=majority
+DATABASE_LOCAL=mongodb://localhost:27017/contact-app
+DATABASE_PASSWORD=NLLZcB5uqNRFM6hH
+JWT_SECRET = slkdfd-efsdf-vvvv-etwrgdfg-adfefsdg-secret
+JWT_EXPIRES_IN=90d
+JWT_COOKIE_EXPIRES_IN=90
