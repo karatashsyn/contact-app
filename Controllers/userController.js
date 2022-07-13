@@ -3,14 +3,23 @@ const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const allUsers = await User.find();
+// const filteredObj = (obj, ...allowedFields)=>{
+//   const new Obj
+// }
 
+exports.getAllContacts = catchAsync(async (req, res, next) => {
+  const queryObject = { ...req.query };
+  const excludedFields = ['page', 'sort', 'limit', 'fields'];
+  excludedFields.forEach((el) => delete queryObject[el]);
+  //console.log(req.query, queryObject);
+  const query = Contact.find(queryObject);
+  ////SORTING PAGINATION.. OTHER THINGS(WE DIDN'T AWAITED CONTACTS IMMEDIATELY BECAUSE WE ARE GONNA IMPLEMENT THE SORTING, PAGINATION AND OTHER STUFF)
+  const allContacts = await query;
   res.status(200).json({
     status: 'success',
-    results: allUsers.length,
+    results: allContacts.length,
     data: {
-      allUsers,
+      allContacts,
     },
   });
 });
@@ -27,28 +36,85 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 //   });
 // });
 
-// exports.createUser = (req, res) => {
-//   const newId = allUsers[allUsers.length - 1].id + 1;
-//   const newUser = Object.assign({ id: newId }, req.body);
-//   allUsers.push(newUser);
-//   fs.writeFile(
-//     `${__dirname}/../users.json`,
-//     JSON.stringify(allUsers),
-//     (err) => {
-//       res.status(201).json({
-//         status: 'success',
-//         data: {
-//           user: newUser,
-//         },
-//       });
+// exports.getOne = (Model, popOptions) => {
+//   catchAsync(async (req, res, next) => {
+//     let query = Model.findById(req.params.id);
+//     if (popOptions) query = query.populate(popOptions);
+//     const doc = await query;
+
+//     if (!doc) {
+//       return next(new AppError('No document with this id'));
 //     }
-//   );
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         data: doc,
+//       },
+//     });
+//   });
 // };
 
-// exports.updateUser = (req, res) => {
-//   res.status(200).json({
-//     status: 'success',
-//   });
+// exports;
+
+// exports.getMe = (req, res, next) => {
+//   req.params.id = req;
+//   next();
+// };
+
+exports.increaseContact = catchAsync(async (req, res, next) => {
+  console.log('ICERDEYIZ HOCAM');
+  console.log(req.body);
+
+  const currentUser = await User.findById(req.body.id);
+  console.log(currentUser);
+  // console.log(oldContacts);
+  let updatedContacts = [];
+  for (let index = 0; index < currentUser.contacts.length; index++) {
+    updatedContacts.push(currentUser.contacts[index]);
+  }
+  const newContact = { name: req.body.name, number: req.body.number };
+  updatedContacts.push(newContact);
+
+  const updated = await User.findByIdAndUpdate(
+    req.body.id,
+    { contacts: updatedContacts },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+});
+
+exports.updateContact = catchAsync(async (req, res, next) => {
+  console.log('ur in updateContact');
+  currentContactNumber = req.body.number;
+  const currentUser = await User.findById(req.body.id);
+  let newArray = currentUser.contacts;
+  console.log(req.body.name);
+  for (let index = 0; index < newArray.length; index++) {
+    if (newArray[index].number === req.body.number) {
+      newArray[index].name = req.body.name;
+    }
+    const updated = await User.findByIdAndUpdate(
+      req.body.id,
+      {
+        contacts: newArray,
+      },
+      { new: true, runValidators: true }
+    );
+  }
+});
+
+// exports.updateMe = async (req, res, next) => {
+//   const updated = await User.findByIdAndUpdate(
+//     req.user.id,
+//     { name: '54' },
+//     {
+//       new: true,
+//       runValidators: true,
+//     }
+//   );
 // };
 
 // exports.deleteUser = (req, res) => {
