@@ -1,0 +1,147 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Contact</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"
+      integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/44dd7d2f30.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="styleEditContact.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div class="back-button">
+          <a href="#" class="back-btn">
+            <i class="fa-solid fa-arrow-left-long"></i>
+          </a>
+        </div>
+
+        <div class="hero-info">
+          <h1 class="name"><%= user.name%></h1>
+        </div>
+        <div class="log-out-section">
+          
+            <div class="log-out" id="logOut">Log Out</div>
+          
+        </div>
+      </header>
+
+      <form class="form" class="form-contact-data">
+        <div class="info-line">
+          <i class="fa-solid fa-user user icon-user"></i>
+          <input
+            id="name"
+            type="text"
+            class=".input-name type"
+            name="name"
+            placeholder="Full Name"
+            required
+          />
+        </div>
+        <div class="info-line">
+          <i class="fa-solid fa-phone icon-phone"></i>
+          <input
+            id="number"
+            type="text"
+            class="input-number type"
+            name="number"
+            placeholder="Number"
+            readonly="true"
+            required
+          />
+        </div>
+        <div class="button-container">
+          <a href="#">
+            <div type="click" class="update-contact" ><p>Update Contact</p></div>
+          </a>
+          <a href="#">
+            <div class="delete-contact"><p>Delete Contact</p></div>
+          </a>
+        </div>
+      </div>
+      </form>
+      <script type="module">
+      export const updateCurrentContact= async(name, number)=>{
+  
+  
+      try{const res = await axios({
+        method:'PATCH',
+        url:'http://127.0.0.1:3000/api/v1/users/updatecontact',
+        data:{
+          name,
+        number,
+        }
+   
+      });
+  if(res.data.status==='success'){ 
+    alert('Changes are saved successfuly ✔️');
+            window.setTimeout(() => {
+              location.assign('http://127.0.0.1:3000/overview');
+            }, 1500);
+    }
+}
+  catch(err){
+console.log(err.response);
+            }
+}
+
+      export const logout = async () => {
+        try {
+          const res = await axios({
+            method: 'GET',
+            url: 'http://127.0.0.1:3000/api/v1/users/logout',
+          });
+
+          if ((res.data.status = 'success'))
+            location.assign('http://127.0.0.1:3000/loginpage');
+        } catch (err) {
+          console.log(err.response);
+          alert('Something went wrong. Try again');
+        }
+      };
+      
+      //INDEX
+      const currentContactNumber =  sessionStorage.getItem('currentNumber');
+      const logOutBtn = document.querySelector('.log-out-link');
+      const backBtn = document.querySelector('.back-button')
+      const updateBtn = document.querySelector('.update-contact')
+      const contactDataForm = document.querySelector('form-contact-data');
+      const numberInput = document.querySelector('.input-number');
+      const nameInput = document.querySelector('.input-name')
+      nameInput.focus(); 
+      numberInput.value=currentContactNumber;
+      
+      
+      if (logOutBtn) {
+        logOutBtn.addEventListener('click', ()=>{logout()});
+      }
+
+        backBtn.addEventListener('click' , (e)=>{
+        e.preventDefault();
+        location.assign('http://127.0.0.1:3000/overview')
+      })
+  
+      
+      
+        updateBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('name').value;
+          const number = document.getElementById('number').value;
+          updateCurrentContact(name,number);
+        });
+       </script> 
+
+  </body>
+</html>
