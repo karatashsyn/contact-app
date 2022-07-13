@@ -33,12 +33,28 @@ const signToken = (id) => {
   });
 };
 
+exports.protect = catchAsync(async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorazitaon &&
+    req.headers.authorazitaon.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  if (!token) {
+    return next(new AppError('Please log in first to get access.', 401));
+  }
+});
+
 exports.signUp = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
-    name: req.body.name,
     email: req.body.email,
+    name: req.body.name,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    passwordconfirm: req.body.passwordconfirm,
     contacts: req.body.contacts,
   });
   createSendToken(newUser, 201, res);
@@ -81,15 +97,21 @@ exports.isLoggedIn = async (req, res, next) => {
         //3 Check if user still exists
         const freshUser = await User.findById(decoded.id);
         if (!freshUser) {
-          return next();
+          return next(
+            new AppError('This user does not exist anymore, log in ')
+          );
         }
         //4 Check if user changed password after the JWT was issued
         if (freshUser.changedPasswordAfter(decoded.iat)) {
-          return next();
+          return next(
+            new AppError('This user changed password recently, log in again')
+          );
         }
 
         //MEANS THERE IS A LOGGED IN USER
+        // console.log(freshUser.name);
         res.locals.user = freshUser;
+        req.body = { ...req.body, id: freshUser.id };
         return next();
       }
     } catch (err) {
@@ -106,4 +128,5 @@ exports.logout = (req, res) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
+  res.status(200).json({ status: 'success' });
 };
