@@ -1,1 +1,0 @@
-exports.axios = require('axios');
