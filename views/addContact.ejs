@@ -99,8 +99,6 @@
                 url: 'http://127.0.0.1:3000/api/v1/users/increasecontact',
                 data: { name, number },
               });
-              if (res.data.status === 'success')
-                alert('Contact has been added', '✔️');
             } catch (err) {
               console.log(err.response);
               alert(err.response, '❌');
@@ -115,12 +113,18 @@
       const backBtn = document.querySelector('.back-button');
       const addBtn = document.querySelector('.add-button');
       addBtn.addEventListener('click', (e) => {
-        e.preventDefault();
         const name = document.getElementById('contactName').value;
         const number = document.getElementById('contactNumber').value;
 
-        // console.log(name, number);
-        addContact(name, number);
+        if (name === '' || number === '') {
+          alert('Fill necessary fields ❗');
+        } else {
+          addContact(name, number);
+          alert('Contact has been added ✔️');
+          window.setTimeout(() => {
+            location.assign('http://127.0.0.1:3000/overview');
+          }, 1500);
+        }
       });
 
       backBtn.addEventListener('click', (e) => {
