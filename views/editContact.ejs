@@ -166,7 +166,9 @@
             try{
                 deleteCurrentContact(deletedNumber);
                 alert('Contact has been deleted 🗑️');
-                location.assign('http://127.0.0.1:3000/overview');
+                window.setTimeout(() => {
+            location.assign('http://127.0.0.1:3000/overview');
+          }, 1500);
             } 
             catch{
                 alert('Upps, somethings went wrong, try again please 😥')
