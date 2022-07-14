@@ -156,7 +156,9 @@
             else{
                 updateCurrentContact(name,number);
             alert('Changes are saved ✔️');
+             window.setTimeout(() => {
             location.assign('http://127.0.0.1:3000/overview');
+          }, 1500);
             }
           
         });
