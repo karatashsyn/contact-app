@@ -1,0 +1,112 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;"
+    />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="styleSignUp.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"
+      integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <form class="form-signup">
+        <div class="signup">
+          <input
+            id="email"
+            class="type"
+            type="text"
+            name="email"
+            placeholder="E-mail"
+            required
+          />
+          <input
+            id="name"
+            class="type"
+            type="text"
+            name="name"
+            placeholder="Fullname"
+            required
+          />
+
+          <input
+            id="password"
+            class="type"
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <input
+            id="passwordconfirm"
+            class="type"
+            type="password"
+            name="passwordconfirm"
+            placeholder="Password Confirm"
+            required
+          />
+          <button type="click" class="sign-up">Sign Up</button>
+          <button type="click" class="log-in">Already have an account ?</button>
+        </div>
+      </form>
+    </div>
+    <script type="module">
+      //INDEX
+
+      const signUpBtn = document.querySelector('.sign-up');
+      const loginBtn = document.querySelector('.log-in');
+      if (signUpBtn) {
+        console.log('We have a submit button');
+      }
+      if (loginBtn) {
+        console.log('We have a log in button');
+      }
+
+      export const signUp = async (email, name, password, passwordconfirm) => {
+        try {
+          const res = await axios({
+            method: 'POST',
+            url: 'http://127.0.0.1:3000/api/v1/users/signup',
+            data: {
+              email,
+              name,
+              password,
+              passwordconfirm,
+            },
+          });
+          if (res.data.status === 'success') {
+            alert('Registered successfuly ✔️');
+            window.setTimeout(() => {
+              location.assign('http://127.0.0.1:3000/overview');
+            }, 1500);
+          }
+        } catch (err) {
+          alert(err.response.data.message + '❌');
+          console.log(err.response.data.message);
+        }
+      };
+      signUpBtn.addEventListener('click', (e) => {
+        console.log('Hello arkadaslar');
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const password = document.getElementById('password').value;
+        const passwordconfirm =
+          document.getElementById('passwordconfirm').value;
+        signUp(email, name, password, passwordconfirm);
+      });
+
+      loginBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Click');
+        location.assign('http://127.0.0.1:3000/loginpage');
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,134 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Contact</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"
+      integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/44dd7d2f30.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="styleAddContact.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div type="click" class="back-button">
+          <a type="click" class="back-button">
+            <i class="fa-solid fa-arrow-left-long go-back"></i>
+          </a>
+        </div>
+
+        <div class="hero-info">
+          <% if(user){ %>
+
+          <h1 style="color: white"><%= user.name %></h1>
+
+          <% } else{ %>
+          <h1>--No User--</h1>
+          <% } %>
+        </div>
+      </header>
+
+      <section class="contact-info">
+        <div class="info-line">
+          <i class="fa-solid fa-user user icon-user"></i>
+          <input
+            id="contactName"
+            type="text"
+            class="contact-name"
+            name="name"
+            placeholder="Full Name"
+            required
+          />
+        </div>
+
+        <div class="info-line">
+          <i class="fa-solid fa-phone icon-phone"></i>
+          <input
+            id="contactNumber"
+            type="text"
+            class="contact-number"
+            name="number"
+            placeholder="number"
+            required
+          />
+        </div>
+      </section>
+      <div class="button-container">
+        <a type="click" href="#" class="add-button">
+          <div type="submit" id="addButton" class="add-button">
+            <p>Add Contact</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <script type="module">
+      ////////////////////////////////////////////////////////////////////////////////////////
+
+      export const goToOverView = async (email, password) => {
+        try {
+          location.assign('http://127.0.0.1:3000/overview');
+        } catch (err) {
+          alert(err.response.data.message + '❌');
+          console.log(err.response.data.message);
+        }
+      };
+
+      export const addContact = async (name, number) => {
+        try {
+          const res = await axios({
+            method: 'POST',
+            url: 'http://127.0.0.1:3000/api/v1/contacts/createcontact',
+            data: {
+              name,
+              number,
+            },
+          });
+
+          if (res.data.status === 'success') {
+            try {
+              const res = await axios({
+                method: 'PATCH',
+                url: 'http://127.0.0.1:3000/api/v1/users/increasecontact',
+                data: { name, number },
+              });
+              if (res.data.status === 'success')
+                alert('Contact has been added', '✔️');
+            } catch (err) {
+              console.log(err.response);
+              alert(err.response, '❌');
+            }
+          }
+        } catch (err) {
+          // alert(err.response.data);
+          console.log(err.response);
+        }
+      };
+      //INDEX
+      const backBtn = document.querySelector('.back-button');
+      const addBtn = document.querySelector('.add-button');
+      addBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('contactName').value;
+        const number = document.getElementById('contactNumber').value;
+
+        // console.log(name, number);
+        addContact(name, number);
+      });
+
+      backBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToOverView();
+      });
+
+      ////////////////////////////////////////////////////////////////////////////////////////
+    </script>
+  </body>
+</html>
