@@ -5,7 +5,6 @@ const catchAsync = require('./../utils/catchAsync');
 
 exports.getContact = catchAsync(async (req, res, next) => {
   const contact = await Contact.findById(req.params.id);
-  //Contact.findOne({_id:req.params.id})
   if (!contact) {
     return next(new AppError('No contact with this ID', 404));
   }
@@ -25,9 +24,6 @@ exports.getAllContacts = catchAsync(async (req, res, next) => {
 });
 
 exports.createContact = catchAsync(async (req, res, next) => {
-  // const newContact = new Contact({});
-  // newContact.save();
-  console.log(req.body); //This includes name: Huseyin Karatas and
   const newContact = await Contact.create({ ...req.body, currentId: null });
   req.body = { ...req.body, newContactId: newContact._id };
   res.status(201).json({
