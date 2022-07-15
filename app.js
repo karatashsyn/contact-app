@@ -1,47 +1,29 @@
 const path = require('path');
 const express = require('express');
 const app = express();
-// const morgan = require('morgan');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const contactRouter = require('./routes/contactRoutes');
 const userRouter = require('./routes/userRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const rateLimit = require('express-rate-limit');
-// const helmet = require('helmet');
-// const mongoSanitize = require('express-mongo-sanitize');
-// const xss = require('xss-clean');
-// const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const html = require('html');
 
 //MIDDLEWARES
 
-//Middleware(stands between the request and the response). Thanks to the middleware below(express.json()),
-//data from the boddy is added to the request object. We are now able to access the request body
 app.use(express.json());
-//We said app.use(), so express.json() is added to the middleware stack
-
-// Creating our own middleware
-app.use((req, res, next) => {
-  //When we passed the (rex,res,next), express knows that we define a middleware function
-  console.log('Hello from the middleware ☀️');
-  req.requestTime = new Date().toISOString();
-  console.log(req.headers);
-  next();
-});
 
 // //Viewer
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'assets')));
 
 app.set('view engine', 'ejs');
-//Set Security http headers
-// app.use(helmet());
-if (process.env.NODE_ENV === 'development') {
-  //app.use(morgan('tiny'));
-} //morgan('tiny') returns a function }
+
+
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('tiny'));
+// } //morgan('tiny') returns a function }
 
 //Limiting too many requests
 const limiter = rateLimit({
@@ -51,12 +33,6 @@ const limiter = rateLimit({
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// app.use('/api', limiter);
-
-// app.use(mongoSanitize());
-
-// app.use(xss());
 
 app.use(cookieParser());
 
