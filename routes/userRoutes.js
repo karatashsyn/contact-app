@@ -25,16 +25,5 @@ router.patch(
   userController.deleteContact
 );
 
-// router.param('id', userController.checkID);
-// router.route('/').get(userController.getAllUsers);
-//   .post(userController.checkBody, userController.createUser);
-//When there is a post request, first checkBody, then createContact function
-// will be called.=> Chaining multiple middlewares.
-
-// router
-//   .route('/:id')
-//   .get(userController.getUser)
-//   .patch(userController.updateUser)
-//   .delete(userController.deleteUser);
 
 module.exports = router;
