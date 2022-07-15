@@ -109,7 +109,7 @@ exports.isLoggedIn = async (req, res, next) => {
         }
 
         //MEANS THERE IS A LOGGED IN USER
-        // console.log(freshUser.name);
+
         res.locals.user = freshUser;
         req.body = { ...req.body, id: freshUser.id };
         return next();
@@ -120,8 +120,7 @@ exports.isLoggedIn = async (req, res, next) => {
   }
   next();
 };
-//Since we cannot change the jwt cookie(because it is http only), to log out, we should
-// send another cookie that does not contain jwt which will overwrite the current cookie with a jwt
+
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
