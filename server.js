@@ -8,6 +8,7 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
+
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -19,19 +20,7 @@ mongoose
     console.log('DB connection is successful ✔️');
   });
 
-// // const { default: test } = require('node:test');
-// const testContact = new Contact({
-//   name: null,
-//   number: '0000000000',
-// });
-// testContact
-//   .save()
-//   .then((doc) => {
-//     console.log(doc);
-//   })
-//   .catch((err) => {
-//     console.log('⚠️ ', err);
-//   });
+
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
@@ -44,10 +33,10 @@ process.on('uncaughtException', (err) => {
   });
 });
 
-// process.on('unhandledRejection', (err) => {
-//   console.log('Unhandled Rejection');
-//   console.log(err.name, err.message);
-//   server.close(() => {
-//     process.exit(1);
-//   });
-// });
+process.on('unhandledRejection', (err) => {
+  console.log('Unhandled Rejection');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
