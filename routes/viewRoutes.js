@@ -18,9 +18,5 @@ router.get(
   authController.isLoggedIn,
   viewController.getEditContact
 );
-// router.get('/editcontact', viewController.getEditContact);
-
-// router.get('/:id', viewController.getContact);
-//CastError Cast to ObjectId failed for value "login" (type string) at path "_id" for model "Contact" hatasi burda
 
 module.exports = router;
