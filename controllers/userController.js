@@ -3,9 +3,7 @@ const AppError = require('../utils/appError');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 
-// const filteredObj = (obj, ...allowedFields)=>{
-//   const new Obj
-// }
+
 
 exports.getAllContacts = catchAsync(async (req, res, next) => {
   const queryObject = { ...req.query };
@@ -23,44 +21,6 @@ exports.getAllContacts = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-// exports.getUser = catchAsync(async (req, res, next) => {
-//   const user = await User.findById(req.params.id);
-
-//   res.status(200).json({
-//     status: 'success',
-//     results: allUsers.length,
-//     data: {
-//       user,
-//     },
-//   });
-// });
-
-// exports.getOne = (Model, popOptions) => {
-//   catchAsync(async (req, res, next) => {
-//     let query = Model.findById(req.params.id);
-//     if (popOptions) query = query.populate(popOptions);
-//     const doc = await query;
-
-//     if (!doc) {
-//       return next(new AppError('No document with this id'));
-//     }
-
-//     res.status(200).json({
-//       status: 'success',
-//       data: {
-//         data: doc,
-//       },
-//     });
-//   });
-// };
-
-// exports;
-
-// exports.getMe = (req, res, next) => {
-//   req.params.id = req;
-//   next();
-// };
 
 exports.increaseContact = catchAsync(async (req, res, next) => {
   console.log('ICERDEYIZ HOCAM');
@@ -123,20 +83,4 @@ exports.deleteContact = catchAsync(async (req, res, next) => {
   );
 });
 
-// exports.updateMe = async (req, res, next) => {
-//   const updated = await User.findByIdAndUpdate(
-//     req.user.id,
-//     { name: '54' },
-//     {
-//       new: true,
-//       runValidators: true,
-//     }
-//   );
-// };
 
-// exports.deleteUser = (req, res) => {
-//   res.status(204).json({
-//     status: 'success',
-//     data: null,
-//   });
-// };
